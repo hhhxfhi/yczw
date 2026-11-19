@@ -1,0 +1,455 @@
+{
+  "origin": "existing-synthetic-test-database",
+  "new_sample_rows_generated": 0,
+  "conversations_included": 0,
+  "tables": [
+    {
+      "name": "resource_demo__archive_doc_index",
+      "rows": 60
+    },
+    {
+      "name": "resource_demo__budget_execution",
+      "rows": 264
+    },
+    {
+      "name": "resource_demo__data_sharing_service",
+      "rows": 363
+    },
+    {
+      "name": "resource_demo__dim_district",
+      "rows": 12
+    },
+    {
+      "name": "resource_demo__district_output_stats",
+      "rows": 22
+    },
+    {
+      "name": "resource_demo__gnss_station_monthly",
+      "rows": 180
+    },
+    {
+      "name": "resource_demo__instrument_assets",
+      "rows": 423
+    },
+    {
+      "name": "resource_demo__land_change_monitoring",
+      "rows": 121
+    },
+    {
+      "name": "resource_demo__legacy_archive_registry",
+      "rows": 72
+    },
+    {
+      "name": "resource_demo__mapping_products",
+      "rows": 290
+    },
+    {
+      "name": "resource_demo__measurement_projects",
+      "rows": 1018
+    },
+    {
+      "name": "resource_demo__qualification_units",
+      "rows": 120
+    },
+    {
+      "name": "resource_demo__result_quality_check",
+      "rows": 322
+    },
+    {
+      "name": "resource_demo__survey_field_work",
+      "rows": 600
+    },
+    {
+      "name": "resource_demo__survey_markers",
+      "rows": 908
+    },
+    {
+      "name": "resource_demo__survey_qual_grade",
+      "rows": 10
+    },
+    {
+      "name": "resource_demo__survey_staff",
+      "rows": 600
+    },
+    {
+      "name": "resource_demo__survey_unit_ownership",
+      "rows": 6
+    },
+    {
+      "name": "resource_demo__survey_year_stats",
+      "rows": 9
+    },
+    {
+      "name": "retail_demo__sales",
+      "rows": 4
+    },
+    {
+      "name": "intent_v1__basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "intent_v1__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "intent_v1__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "intent_v1__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "intent_v1__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "intent_v1__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "intent_v1__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "boundary_below__basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "boundary_below__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "boundary_below__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "boundary_below__map_reviews",
+      "rows": 10448
+    },
+    {
+      "name": "boundary_below__profession_monthly",
+      "rows": 101385
+    },
+    {
+      "name": "boundary_below__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "boundary_below__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "boundary_equal__basic_project_monthly",
+      "rows": 5544
+    },
+    {
+      "name": "boundary_equal__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "boundary_equal__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "boundary_equal__map_reviews",
+      "rows": 10578
+    },
+    {
+      "name": "boundary_equal__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "boundary_equal__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "boundary_equal__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "boundary_above__basic_project_monthly",
+      "rows": 3528
+    },
+    {
+      "name": "boundary_above__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "boundary_above__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "boundary_above__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "boundary_above__profession_monthly",
+      "rows": 99360
+    },
+    {
+      "name": "boundary_above__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "boundary_above__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "boundary_duplicates__basic_project_monthly",
+      "rows": 7570
+    },
+    {
+      "name": "boundary_duplicates__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "boundary_duplicates__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "boundary_duplicates__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "boundary_duplicates__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "boundary_duplicates__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "boundary_duplicates__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "boundary_quality__basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "boundary_quality__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "boundary_quality__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "boundary_quality__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "boundary_quality__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "boundary_quality__tianditu_monthly",
+      "rows": 924
+    },
+    {
+      "name": "boundary_quality__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "acceptance_a58772a93ce8__basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "acceptance_a58772a93ce8__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "acceptance_a58772a93ce8__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "acceptance_a58772a93ce8__map_reviews",
+      "rows": 10448
+    },
+    {
+      "name": "acceptance_a58772a93ce8__profession_monthly",
+      "rows": 101385
+    },
+    {
+      "name": "acceptance_a58772a93ce8__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "acceptance_a58772a93ce8__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "acceptance_b83a03b062f6__basic_project_monthly",
+      "rows": 5544
+    },
+    {
+      "name": "acceptance_b83a03b062f6__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "acceptance_b83a03b062f6__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "acceptance_b83a03b062f6__map_reviews",
+      "rows": 10578
+    },
+    {
+      "name": "acceptance_b83a03b062f6__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "acceptance_b83a03b062f6__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "acceptance_b83a03b062f6__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__basic_project_monthly",
+      "rows": 3528
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__profession_monthly",
+      "rows": 99360
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "acceptance_17ab3f35b9e7__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "acceptance_23465fe041af__basic_project_monthly",
+      "rows": 7570
+    },
+    {
+      "name": "acceptance_23465fe041af__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "acceptance_23465fe041af__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "acceptance_23465fe041af__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "acceptance_23465fe041af__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "acceptance_23465fe041af__tianditu_monthly",
+      "rows": 945
+    },
+    {
+      "name": "acceptance_23465fe041af__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__basic_project_monthly",
+      "rows": 7560
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__certificate_monthly",
+      "rows": 28350
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__government_cases",
+      "rows": 10500
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__map_reviews",
+      "rows": 10584
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__profession_monthly",
+      "rows": 103140
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__tianditu_monthly",
+      "rows": 924
+    },
+    {
+      "name": "acceptance_ba9b4527ead5__unit_inspection",
+      "rows": 4725
+    },
+    {
+      "name": "connection_check__connection_acceptance",
+      "rows": 2
+    },
+    {
+      "name": "advanced__allocation",
+      "rows": 2
+    },
+    {
+      "name": "advanced__budget",
+      "rows": 2
+    },
+    {
+      "name": "advanced__cities",
+      "rows": 2
+    },
+    {
+      "name": "advanced__inventory",
+      "rows": 4
+    },
+    {
+      "name": "advanced__series",
+      "rows": 48
+    },
+    {
+      "name": "advanced__spending",
+      "rows": 3
+    }
+  ],
+  "row_count": 1971643,
+  "database_sha256": "aac38b78007a1689afb0f0179f34b8e92311b9af094072a7d90252e1d61f983f",
+  "text_privacy_patterns_matched": 0,
+  "source_id": "test-database"
+}

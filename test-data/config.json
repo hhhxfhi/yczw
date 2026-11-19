@@ -1,0 +1,5657 @@
+{
+  "source": {
+    "id": "test-database",
+    "name": "测试数据库",
+    "dialect": "sqlite",
+    "synthetic": true,
+    "connection_enabled": true,
+    "connection_managed": true,
+    "connection_revision": 1,
+    "description": "问数能力测试专用合成数据。无前缀表为全意图 v2 基准；其余按原场景前缀隔离，不应跨场景混算。",
+    "tables": [
+      {
+        "name": "resource_demo__archive_doc_index",
+        "label": "自然资源 · 演示数据 · 测绘档案文档编目（长文本/JSON 测试用）：60 卷测绘成果档案的文档级编目记录，含长文本摘要（150~450 字）、以「；」分隔的多值关键词列、以及空间范围与质检元数据两个 JSON 字符串列（非 jsonb），专用于测单元格超长截断、多值拆分与结构化字段解析/降级三条链路。",
+        "columns": [
+          {
+            "name": "doc_title",
+            "type": "TEXT",
+            "label": "文档标题"
+          },
+          {
+            "name": "doc_type",
+            "type": "TEXT",
+            "label": "文档类型，枚举：项目验收报告/技术设计书/质量检查报告/成果目录/项目总结"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "成果所属行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "doc_year",
+            "type": "INTEGER",
+            "label": "归档年度"
+          },
+          {
+            "name": "page_count",
+            "type": "INTEGER",
+            "label": "文档页数（页）"
+          },
+          {
+            "name": "file_size_gb",
+            "type": "REAL",
+            "label": "文档体量（GB）"
+          },
+          {
+            "name": "attach_count",
+            "type": "INTEGER",
+            "label": "附件数量（个）"
+          },
+          {
+            "name": "summary_long",
+            "type": "TEXT",
+            "label": "内容摘要（长文本，150~450 字）：含作业范围、技术路线、质量控制与结论，用于测试单元格超长截断、折叠展开与摘要类问数"
+          },
+          {
+            "name": "keywords_multi",
+            "type": "TEXT",
+            "label": "主题关键词（多值，以「；」分隔 3~8 个）：用于测试多值拆分与 LIKE 模糊匹配，不是受控枚举，不可直接当等值筛选条件"
+          },
+          {
+            "name": "extent_json",
+            "type": "TEXT",
+            "label": "空间范围（JSON 字符串，非 jsonb）：字段 minx/miny/maxx/maxy/crs，坐标系均为 EPSG:4490；解析失败时需降级处理"
+          },
+          {
+            "name": "quality_meta_json",
+            "type": "TEXT",
+            "label": "质检元数据（JSON 字符串）：字段 batches/samples/pass_rate/rmse_plan_m/rmse_height_m"
+          },
+          {
+            "name": "doc_id",
+            "type": "TEXT",
+            "label": "文档编号，主键，形如 DOC_0001"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__budget_execution",
+        "label": "自然资源 · 演示数据 · 测绘经费执行：逐区逐年分科目的预算与实际支出情况，含预算执行率与资金来源，用于分析经费保障水平与执行进度。数据年度范围 2022-2026。",
+        "columns": [
+          {
+            "name": "exec_id",
+            "type": "TEXT",
+            "label": "经费执行记录编号，主键"
+          },
+          {
+            "name": "exec_year",
+            "type": "INTEGER",
+            "label": "执行年度，范围 2022-2026"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "行政区，广州市下辖 11 个区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "budget_subject",
+            "type": "TEXT",
+            "label": "经费科目，枚举：基础测绘经费/专项调查经费/成果更新经费/设备购置经费"
+          },
+          {
+            "name": "budget_wan",
+            "type": "REAL",
+            "label": "年初预算金额（万元）"
+          },
+          {
+            "name": "actual_wan",
+            "type": "REAL",
+            "label": "实际支出金额（万元）"
+          },
+          {
+            "name": "execution_rate",
+            "type": "REAL",
+            "label": "预算执行率（%），实际支出/预算金额"
+          },
+          {
+            "name": "funding_source",
+            "type": "TEXT",
+            "label": "资金来源，枚举：市财政拨款/区财政拨款/上级转移支付/单位自筹"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__data_sharing_service",
+        "label": "自然资源 · 演示数据 · 测绘成果共享服务：逐区逐月的在线服务运行统计，含接口调用次数、下载量、活跃用户与平均响应时长，用于分析共享服务使用强度与服务质量。",
+        "columns": [
+          {
+            "name": "service_id",
+            "type": "TEXT",
+            "label": "服务统计记录编号，主键"
+          },
+          {
+            "name": "stat_month",
+            "type": "TEXT",
+            "label": "统计月份，格式 YYYY-MM，范围 2024-01 至 2026-09"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "服务归属行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "服务类型，枚举：在线地图服务/数据接口调用/成果目录查询"
+          },
+          {
+            "name": "call_count",
+            "type": "INTEGER",
+            "label": "接口调用次数（次）"
+          },
+          {
+            "name": "download_count",
+            "type": "INTEGER",
+            "label": "成果下载次数（次）"
+          },
+          {
+            "name": "unique_users",
+            "type": "INTEGER",
+            "label": "活跃用户数（个）"
+          },
+          {
+            "name": "avg_response_ms",
+            "type": "INTEGER",
+            "label": "平均响应时长（毫秒）"
+          },
+          {
+            "name": "satisfaction_score",
+            "type": "REAL",
+            "label": "用户满意度评分（0-100 分）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__dim_district",
+        "label": "自然资源 · 演示数据 · 行政区维表：广州市及下辖 11 个区的行政区划代码、面积、常住人口与人口密度，共 12 条记录（1 个市级 + 11 个区级）。全库所有 region 列均作为外键指向本表，用于跨表按行政区关联与行政区口径统一。",
+        "columns": [
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "行政区名称，主键，枚举：广州市（市级汇总）/越秀区/荔湾区/海珠区/天河区/白云区/黄埔区/番禺区/花都区/南沙区/从化区/增城区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "district_code",
+            "type": "TEXT",
+            "label": "行政区划代码（GB/T 2260），广州市 440100"
+          },
+          {
+            "name": "district_level",
+            "type": "TEXT",
+            "label": "行政层级，枚举：市级/区级"
+          },
+          {
+            "name": "parent_region",
+            "type": "TEXT",
+            "label": "上级行政区；区级为「广州市」，市级为空"
+          },
+          {
+            "name": "area_km2",
+            "type": "REAL",
+            "label": "辖区面积（平方公里），广州市为全域合计"
+          },
+          {
+            "name": "permanent_population_wan",
+            "type": "REAL",
+            "label": "常住人口（万人），广州市为 11 区合计"
+          },
+          {
+            "name": "population_density",
+            "type": "REAL",
+            "label": "人口密度（人/平方公里）= 常住人口 / 辖区面积，派生指标"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__district_output_stats",
+        "label": "自然资源 · 演示数据 · 各区测绘成果产出统计：按行政区与成果类别（基础测绘成果/专业测绘成果）统计的年度产出情况，含成果件数、覆盖面积、数据体量（GB）与累计下载次数，用于各区各类成果的横向多维对比。共 22 条记录（11 区 × 2 类）。",
+        "columns": [
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "行政区，广州市下辖 11 个区；本表每区 2 条记录（基础/专业两类成果）（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "product_category",
+            "type": "TEXT",
+            "label": "成果类别，枚举：基础测绘成果/专业测绘成果；基础测绘成果含 DLG数字线划图/DOM数字正射影像/DEM数字高程模型/DRG数字栅格地图，专业测绘成果含 专题地图/标准地图/实景三维模型"
+          },
+          {
+            "name": "product_count",
+            "type": "INTEGER",
+            "label": "本年度产出成果数量（件）"
+          },
+          {
+            "name": "coverage_km2",
+            "type": "REAL",
+            "label": "成果覆盖面积（平方公里）"
+          },
+          {
+            "name": "data_volume_gb",
+            "type": "REAL",
+            "label": "成果数据体量（GB）"
+          },
+          {
+            "name": "download_count",
+            "type": "INTEGER",
+            "label": "累计成果下载次数（次）"
+          },
+          {
+            "name": "record_no",
+            "type": "TEXT",
+            "label": "统计记录编号，主键，形如 OUT_0001"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__gnss_station_monthly",
+        "label": "自然资源 · 演示数据 · GNSS 基准站逐月运行监测（时序测试用）：5 个基准站 2023-10 ~ 2026-09 连续 36 期的数据可用率、有效观测小时、平均可见卫星数、数据量与多路径误差，共 180 条记录。每个站点都是连续的完整序列，专用于测折线的采样密度、趋势拟合与单站同比环比；其中增城站 2025-03 ~ 2025-06 存在一段可用率异常下滑，可作为「找出异常月份」的确定答案。",
+        "columns": [
+          {
+            "name": "station_name",
+            "type": "TEXT",
+            "label": "基准站名称，枚举：广州从化基准站/广州南沙基准站/广州增城基准站/广州花都基准站/广州番禺基准站；本表每站连续 36 期（2023-10 ~ 2026-09）"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "基准站所在行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "stat_month",
+            "type": "TEXT",
+            "label": "统计月份（YYYY-MM），每站连续无缺月"
+          },
+          {
+            "name": "availability_rate",
+            "type": "REAL",
+            "label": "数据可用率（%），= 有效观测小时 / 应观测小时"
+          },
+          {
+            "name": "obs_hours",
+            "type": "REAL",
+            "label": "当月有效观测小时数（小时）"
+          },
+          {
+            "name": "satellite_avg",
+            "type": "REAL",
+            "label": "当月平均可见卫星数（颗）"
+          },
+          {
+            "name": "data_volume_gb",
+            "type": "REAL",
+            "label": "当月回传观测数据体量（GB）"
+          },
+          {
+            "name": "multipath_rms_m",
+            "type": "REAL",
+            "label": "多路径误差 RMS（米），越小越好"
+          },
+          {
+            "name": "station_id",
+            "type": "TEXT",
+            "label": "站点编号，形如 GNSS_01；与 survey_markers 的 GNSS连续运行基准站同域"
+          },
+          {
+            "name": "record_no",
+            "type": "TEXT",
+            "label": "监测记录编号，主键，形如 GNS_0001"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__instrument_assets",
+        "label": "自然资源 · 演示数据 · 测绘仪器设备台账：各资质单位在用的测量仪器明细，含品牌型号、数量、原值、标称精度与检定状态，用于分析设备保有量、资产结构与检定合规情况。",
+        "columns": [
+          {
+            "name": "asset_id",
+            "type": "TEXT",
+            "label": "设备台账编号，主键"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "持有单位编号，关联 qualification_units.unit_id"
+          },
+          {
+            "name": "instrument_type",
+            "type": "TEXT",
+            "label": "仪器类型，枚举：GNSS接收机/全站仪/水准仪/无人机航测系统/三维激光扫描仪/管线探测仪/测深仪"
+          },
+          {
+            "name": "brand_model",
+            "type": "TEXT",
+            "label": "品牌型号"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "设备存放地行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "purchase_year",
+            "type": "INTEGER",
+            "label": "购置年份，范围 2014-2026"
+          },
+          {
+            "name": "quantity",
+            "type": "INTEGER",
+            "label": "数量（台/套）"
+          },
+          {
+            "name": "original_value_wan",
+            "type": "REAL",
+            "label": "设备原值（万元）"
+          },
+          {
+            "name": "accuracy_level",
+            "type": "TEXT",
+            "label": "标称精度等级，如 3mm+0.5ppm、0.5″、DS05"
+          },
+          {
+            "name": "calibration_status",
+            "type": "TEXT",
+            "label": "检定状态，枚举：合格/临近有效期/超期未检"
+          },
+          {
+            "name": "next_calibration_date",
+            "type": "TEXT",
+            "label": "下次检定到期日"
+          },
+          {
+            "name": "calibration_overdue_days",
+            "type": "INTEGER",
+            "label": "检定超期天数：0=未超期，正数=自 next_calibration_date 起已超期天数。供「列出超期未检设备」这类异常清单问数与阈值告警直接使用，等价于 calibration_status = '超期未检' 的量化表达"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__land_change_monitoring",
+        "label": "自然资源 · 演示数据 · 国土变更调查年度指标：逐区逐年土地利用变化监测，含变更图斑数与耕地/建设用地/林地/水域净变化（正数=净增加，负数=净减少）。数据年度范围 2016-2026。",
+        "columns": [
+          {
+            "name": "year",
+            "type": "INTEGER",
+            "label": "统计年度，范围 2016-2026"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "行政区，广州市下辖 11 个区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "change_plots",
+            "type": "INTEGER",
+            "label": "年度变更图斑数量（个）"
+          },
+          {
+            "name": "change_area_km2",
+            "type": "REAL",
+            "label": "年度变更图斑总面积（平方公里）"
+          },
+          {
+            "name": "cultivated_land_delta",
+            "type": "REAL",
+            "label": "耕地净变化（平方公里），正数表示耕地净增加"
+          },
+          {
+            "name": "construction_land_delta",
+            "type": "REAL",
+            "label": "建设用地净变化（平方公里），正数表示净增加"
+          },
+          {
+            "name": "forest_land_delta",
+            "type": "REAL",
+            "label": "林地净变化（平方公里），正数表示净增加"
+          },
+          {
+            "name": "water_delta",
+            "type": "REAL",
+            "label": "水域净变化（平方公里），正数表示净增加"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__legacy_archive_registry",
+        "label": "自然资源 · 演示数据 · 历史档案登记表（容错测试用）：2015-2021 年存量测绘成果档案的迁移登记记录，共 72 卷。本表文本列「刻意保留未规范化的历史脏值」（前后空白、全半角混用、大小写混用、简称异形、空串与占位符），用于测试 TRIM / 全半角 / 大小写 / 同义异形 / 空占位等容错链；其余表均为受控枚举干净值，两相对照可定位归一化缺口。",
+        "columns": [
+          {
+            "name": "archive_id",
+            "type": "TEXT",
+            "label": "档案编号，主键，形如 ARC_0001"
+          },
+          {
+            "name": "archive_name",
+            "type": "TEXT",
+            "label": "档案名称"
+          },
+          {
+            "name": "district_text",
+            "type": "TEXT",
+            "label": "行政区「原始登记文本，未规范化」：可能含前后空白，或写成简称（「天河」）与带市名前缀（「广州市天河区」）等异形；统计/筛选前需 TRIM 并与 dim_district.region 归一后比较"
+          },
+          {
+            "name": "product_type_text",
+            "type": "TEXT",
+            "label": "成果类型「原始登记文本，未规范化」：与 mapping_products.product_type 同义但大小写混用（如「dlg数字线划图」与「DLG数字线划图」并存）、可能含前后空白；比较前需 TRIM 与大小写归一"
+          },
+          {
+            "name": "scale_text",
+            "type": "TEXT",
+            "label": "比例尺「原始登记文本，未规范化」：半角冒号（1:500）与全角冒号（1：500）并存、可能含前后空白；比较前需做全半角归一"
+          },
+          {
+            "name": "archive_status_text",
+            "type": "TEXT",
+            "label": "归档状态「原始登记文本，未规范化」：含空字符串与「-」「/」等占位符，表示当年迁移时未填状态；不能直接当枚举筛选"
+          },
+          {
+            "name": "submit_date",
+            "type": "TEXT",
+            "label": "档案提交日期，范围 2015-2021"
+          },
+          {
+            "name": "file_size_gb",
+            "type": "REAL",
+            "label": "档案体量（GB）"
+          },
+          {
+            "name": "sheet_count",
+            "type": "INTEGER",
+            "label": "图幅数量（幅）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__mapping_products",
+        "label": "自然资源 · 演示数据 · 测绘成果产品：已入库的数字测绘成果与地图产品目录，覆盖 DLG/DOM/DEM/DRG/专题地图/标准地图/实景三维模型，含数据体量、更新周期与共享服务热度。",
+        "columns": [
+          {
+            "name": "product_id",
+            "type": "TEXT",
+            "label": "成果编号，主键"
+          },
+          {
+            "name": "product_name",
+            "type": "TEXT",
+            "label": "成果名称"
+          },
+          {
+            "name": "product_type",
+            "type": "TEXT",
+            "label": "成果类型枚举：DLG数字线划图/DOM数字正射影像/DEM数字高程模型/DRG数字栅格地图/专题地图/标准地图/实景三维模型"
+          },
+          {
+            "name": "scale",
+            "type": "TEXT",
+            "label": "成果比例尺，枚举：1:500/1:1000/1:2000/1:5000/1:10000/1:25000/1:50000"
+          },
+          {
+            "name": "publish_year",
+            "type": "INTEGER",
+            "label": "成果发布年度，范围 2021-2026"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "成果覆盖范围，可为「广州市」全市或具体区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "coverage_km2",
+            "type": "REAL",
+            "label": "成果覆盖面积（平方公里）"
+          },
+          {
+            "name": "file_size_gb",
+            "type": "REAL",
+            "label": "成果数据体量（GB）"
+          },
+          {
+            "name": "update_cycle",
+            "type": "TEXT",
+            "label": "更新周期，枚举：月度/季度/半年度/年度/不定期"
+          },
+          {
+            "name": "download_count",
+            "type": "INTEGER",
+            "label": "累计下载次数"
+          },
+          {
+            "name": "service_calls",
+            "type": "INTEGER",
+            "label": "累计服务调用次数（在线地图/接口）"
+          },
+          {
+            "name": "quality_score",
+            "type": "REAL",
+            "label": "成果质量评分（0-100 分）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__measurement_projects",
+        "label": "自然资源 · 演示数据 · 测绘项目台账：自然资源测绘年度项目立项与执行记录，含预算与实际支出对比、作业面积、进度状态、验收评分与工期延期天数。数据年度范围 2022-2026。",
+        "columns": [
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "项目编号，主键，形如 PRJ_2024_0001"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "项目名称"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "项目类型，枚举：基础测绘/地理国情监测/国土变更调查/不动产测绘/勘测定界/矿山地质测量/海洋测绘/地图编制/实景三维建设"
+          },
+          {
+            "name": "scale",
+            "type": "TEXT",
+            "label": "测绘成果比例尺，枚举：1:500/1:1000/1:2000/1:5000/1:10000，分母越大精度越低覆盖越大"
+          },
+          {
+            "name": "area_km2",
+            "type": "REAL",
+            "label": "项目作业面积（平方公里）"
+          },
+          {
+            "name": "budget_wan",
+            "type": "REAL",
+            "label": "项目预算（万元）"
+          },
+          {
+            "name": "actual_cost_wan",
+            "type": "REAL",
+            "label": "项目实际支出（万元）；进行中项目尚未决算，该列为空"
+          },
+          {
+            "name": "start_date",
+            "type": "TEXT",
+            "label": "项目开工日期"
+          },
+          {
+            "name": "end_date",
+            "type": "TEXT",
+            "label": "项目计划/实际竣工日期；进行中项目为计划日期"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "项目状态，枚举：进行中/已完工/已验收/已结题；办结量只统计已完工/已验收/已结题"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "项目所在行政区，广州市下辖 11 个区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "owner_dept",
+            "type": "TEXT",
+            "label": "项目主管处室，枚举：测绘管理处/自然资源调查处/国土空间规划处/不动产登记中心"
+          },
+          {
+            "name": "plan_year",
+            "type": "INTEGER",
+            "label": "立项年度，范围 2022-2026"
+          },
+          {
+            "name": "builder_unit_id",
+            "type": "TEXT",
+            "label": "承建单位编号，关联 qualification_units.unit_id"
+          },
+          {
+            "name": "acceptance_score",
+            "type": "REAL",
+            "label": "竣工验收评分（0-100 分）；仅已验收项目有分值，其余为空"
+          },
+          {
+            "name": "delay_days",
+            "type": "INTEGER",
+            "label": "实际工期较计划延期天数；未完工项目为空，负数表示提前完工"
+          },
+          {
+            "name": "is_delayed",
+            "type": "INTEGER",
+            "label": "延期标记，枚举：1=实际工期超出计划，0=按期或提前完工；进行中项目为空（尚无法判定）。等价于 delay_days > 0，供「列出延期项目」这类异常清单问数与阈值告警直接使用"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__qualification_units",
+        "label": "自然资源 · 演示数据 · 测绘资质单位：自然资源测绘行业持证单位台账，资质等级分为甲/乙/丙/丁四级，含人员规模、注册资本、年度营业收入与新签合同额，反映单位经营规模。",
+        "columns": [
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "单位编号，主键，形如 unit_001"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "单位名称"
+          },
+          {
+            "name": "qualification_level",
+            "type": "TEXT",
+            "label": "测绘资质等级，枚举：甲级/乙级/丙级/丁级，甲级最高"
+          },
+          {
+            "name": "business_scope",
+            "type": "TEXT",
+            "label": "业务范围（专业类别组合）"
+          },
+          {
+            "name": "staff_count",
+            "type": "INTEGER",
+            "label": "从业人员总数（人）"
+          },
+          {
+            "name": "registered_capital_wan",
+            "type": "REAL",
+            "label": "注册资本（万元）"
+          },
+          {
+            "name": "register_year",
+            "type": "INTEGER",
+            "label": "单位成立年份"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "注册地行政区，广州市下辖 11 个区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "annual_revenue_wan",
+            "type": "REAL",
+            "label": "上年度营业收入（万元）"
+          },
+          {
+            "name": "gis_system_count",
+            "type": "INTEGER",
+            "label": "在用的地理信息系统套数"
+          },
+          {
+            "name": "contract_amount_wan",
+            "type": "REAL",
+            "label": "本年度新签合同额（万元）"
+          },
+          {
+            "name": "cert_staff_count",
+            "type": "INTEGER",
+            "label": "注册测绘师人数（人）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__result_quality_check",
+        "label": "自然资源 · 演示数据 · 测绘成果质量检查：逐区逐年的成果质检台账，含抽检批次、合格率、平均点位中误差与退回整改情况，用于分析成果质量水平与精度达标率。",
+        "columns": [
+          {
+            "name": "check_id",
+            "type": "TEXT",
+            "label": "质检记录编号，主键"
+          },
+          {
+            "name": "check_year",
+            "type": "INTEGER",
+            "label": "检查年度，范围 2022-2026"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "受检单位/成果所在行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "product_type",
+            "type": "TEXT",
+            "label": "受检成果类型，枚举：DLG数字线划图/DOM数字正射影像/DEM数字高程模型/DRG数字栅格地图/专题地图/标准地图/实景三维模型"
+          },
+          {
+            "name": "check_batches",
+            "type": "INTEGER",
+            "label": "检查批次数量（批）"
+          },
+          {
+            "name": "sample_count",
+            "type": "INTEGER",
+            "label": "抽检样本数（个）"
+          },
+          {
+            "name": "pass_rate",
+            "type": "REAL",
+            "label": "抽检合格率（%）"
+          },
+          {
+            "name": "avg_error_m",
+            "type": "REAL",
+            "label": "平均点位中误差（米），越小精度越高"
+          },
+          {
+            "name": "rejected_count",
+            "type": "INTEGER",
+            "label": "退回整改批次数（批）"
+          },
+          {
+            "name": "inspector_dept",
+            "type": "TEXT",
+            "label": "质检实施部门"
+          },
+          {
+            "name": "is_below_target",
+            "type": "INTEGER",
+            "label": "达标标记，枚举：1=抽检合格率低于 90% 达标线，0=达标。由 pass_rate 派生，供「列出未达标批次」这类异常清单问数与阈值告警直接使用"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_field_work",
+        "label": "自然资源 · 演示数据 · 测绘外业作业记录：逐区逐月的外业出勤与作业量台账，含作业类型、出勤人数、完成点位数、行程与天气，用于分析外业投入强度与效率。数据范围 2024-10 起 24 个月。",
+        "columns": [
+          {
+            "name": "work_id",
+            "type": "TEXT",
+            "label": "作业记录编号，主键"
+          },
+          {
+            "name": "work_date",
+            "type": "TEXT",
+            "label": "作业日期"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "作业所在行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "work_type",
+            "type": "TEXT",
+            "label": "作业类型，枚举：控制测量/地形测量/变形监测/竣工测量/界线测绘/外业核查"
+          },
+          {
+            "name": "team_code",
+            "type": "TEXT",
+            "label": "作业小组编号"
+          },
+          {
+            "name": "staff_count",
+            "type": "INTEGER",
+            "label": "出勤人数（人）"
+          },
+          {
+            "name": "work_days",
+            "type": "REAL",
+            "label": "折合工时（天）"
+          },
+          {
+            "name": "points_completed",
+            "type": "INTEGER",
+            "label": "完成点位数（个）"
+          },
+          {
+            "name": "distance_km",
+            "type": "REAL",
+            "label": "外业行程（公里）"
+          },
+          {
+            "name": "weather",
+            "type": "TEXT",
+            "label": "天气，枚举：晴/多云/阴/小雨/中雨/高温"
+          },
+          {
+            "name": "finish_status",
+            "type": "TEXT",
+            "label": "作业状态，枚举：已完成/进行中/已取消"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_markers",
+        "label": "自然资源 · 演示数据 · 测量标志：国家等级测量控制点（三角点/水准点/GNSS点/基准站）台账与完好状况，含点位高程、累计维护次数与巡查评分，反映测绘基准设施维护情况。",
+        "columns": [
+          {
+            "name": "marker_id",
+            "type": "TEXT",
+            "label": "测量标志编号，主键"
+          },
+          {
+            "name": "marker_code",
+            "type": "TEXT",
+            "label": "标志点号（对外编号）"
+          },
+          {
+            "name": "marker_type",
+            "type": "TEXT",
+            "label": "标志类型枚举：GNSS连续运行基准站/一等三角点/二等三角点/水准点/GNSS点"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "标志所在行政区，广州市下辖 11 个区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "build_year",
+            "type": "INTEGER",
+            "label": "标志埋设年份，范围 1965-2025"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "标志完好状态，枚举：完好/轻微损坏/严重损坏/待维护/已迁建"
+          },
+          {
+            "name": "last_check_date",
+            "type": "TEXT",
+            "label": "最近一次巡查日期"
+          },
+          {
+            "name": "elevation_m",
+            "type": "REAL",
+            "label": "标志点海拔高程（米）"
+          },
+          {
+            "name": "maintenance_count",
+            "type": "INTEGER",
+            "label": "累计维护次数（含迁建与修复）"
+          },
+          {
+            "name": "last_check_score",
+            "type": "REAL",
+            "label": "最近一次巡查评分（0-100 分），完好度越高分值越高"
+          },
+          {
+            "name": "maintain_cost_yuan",
+            "type": "REAL",
+            "label": "累计维护费用（元）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_qual_grade",
+        "label": "自然资源 · 演示数据 · 全国测绘资质单位等级分布（真实公开数据）：按甲/乙/丙/丁四级统计的持证单位数量，来源于自然资源部历年统计公报。",
+        "columns": [
+          {
+            "name": "stat_year",
+            "type": "INTEGER",
+            "label": "统计年度"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "资质等级，枚举：甲级/乙级/丙级/丁级"
+          },
+          {
+            "name": "unit_count",
+            "type": "INTEGER",
+            "label": "该等级资质单位数量（家）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_staff",
+        "label": "自然资源 · 演示数据 · 测绘从业人员统计：各资质单位逐年的从业队伍结构与人员流动情况，含人员总数、平均年龄、学历与职称结构、注册测绘师配备及新进离职人数，反映行业人力状况。",
+        "columns": [
+          {
+            "name": "stat_id",
+            "type": "TEXT",
+            "label": "统计记录编号，主键"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "所属单位编号，关联 qualification_units.unit_id"
+          },
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": "单位注册地行政区（取值：越秀区、荔湾区、海珠区、天河区、白云区、黄埔区、番禺区、花都区、南沙区、从化区、增城区）"
+          },
+          {
+            "name": "stat_year",
+            "type": "INTEGER",
+            "label": "统计年度，范围 2022-2026"
+          },
+          {
+            "name": "staff_total",
+            "type": "INTEGER",
+            "label": "从业人员总数（人）"
+          },
+          {
+            "name": "avg_age",
+            "type": "REAL",
+            "label": "从业人员平均年龄（岁）"
+          },
+          {
+            "name": "bachelor_ratio",
+            "type": "REAL",
+            "label": "本科及以上学历占比（%）"
+          },
+          {
+            "name": "engineer_ratio",
+            "type": "REAL",
+            "label": "中级及以上职称占比（%）"
+          },
+          {
+            "name": "registered_surveyor_count",
+            "type": "INTEGER",
+            "label": "注册测绘师人数（人）"
+          },
+          {
+            "name": "new_hire_count",
+            "type": "INTEGER",
+            "label": "当年新进人数（人）"
+          },
+          {
+            "name": "turnover_count",
+            "type": "INTEGER",
+            "label": "当年离职人数（人）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_unit_ownership",
+        "label": "自然资源 · 演示数据 · 全国测绘资质单位所有制构成（真实公开数据）：按国有/民营统计的资质单位数量，反映行业市场主体结构变化。",
+        "columns": [
+          {
+            "name": "stat_year",
+            "type": "INTEGER",
+            "label": "统计年度"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "所有制性质，枚举：国有/民营"
+          },
+          {
+            "name": "unit_count",
+            "type": "INTEGER",
+            "label": "该类所有制资质单位数量（家）"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "resource_demo__survey_year_stats",
+        "label": "自然资源 · 演示数据 · 全国测绘资质单位年度统计（真实公开数据）：来源于自然资源部《中国土地矿产海洋资源统计公报》与《中国地理信息产业发展报告》，含资质单位总数、地理信息产业服务总值与从业人员规模。部分年份公报未披露的字段留空。",
+        "columns": [
+          {
+            "name": "stat_year",
+            "type": "INTEGER",
+            "label": "统计年度"
+          },
+          {
+            "name": "qual_unit_total",
+            "type": "INTEGER",
+            "label": "全国测绘资质单位总数（家）；该年公报未披露则为空"
+          },
+          {
+            "name": "service_value_yi",
+            "type": "REAL",
+            "label": "地理信息产业服务总值（亿元）；未披露则为空"
+          },
+          {
+            "name": "staff_wan",
+            "type": "REAL",
+            "label": "从业人员总数（万人）；未披露则为空"
+          },
+          {
+            "name": "src_note",
+            "type": "TEXT",
+            "label": "数据出处说明"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "retail_demo__sales",
+        "label": "经营分析 · 演示数据 · 月度销售",
+        "columns": [
+          {
+            "name": "region",
+            "label": "区域",
+            "type": "TEXT"
+          },
+          {
+            "name": "month",
+            "label": "月份",
+            "type": "TEXT"
+          },
+          {
+            "name": "revenue",
+            "label": "销售额",
+            "type": "REAL"
+          },
+          {
+            "name": "orders",
+            "label": "订单数",
+            "type": "INTEGER"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__certificate_monthly",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__profession_monthly",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__unit_inspection",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__basic_project_monthly",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__government_cases",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__map_reviews",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "intent_v1__tianditu_monthly",
+        "label": "全意图测试数据 · 合成 · 2023—2026年9月 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "certificate_monthly",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "profession_monthly",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "unit_inspection",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "basic_project_monthly",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "government_cases",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "map_reviews",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "tianditu_monthly",
+        "label": "全意图业务覆盖 v2 · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__certificate_monthly",
+        "label": "边界夹具 · below · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__profession_monthly",
+        "label": "边界夹具 · below · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__unit_inspection",
+        "label": "边界夹具 · below · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__basic_project_monthly",
+        "label": "边界夹具 · below · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__government_cases",
+        "label": "边界夹具 · below · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__map_reviews",
+        "label": "边界夹具 · below · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_below__tianditu_monthly",
+        "label": "边界夹具 · below · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__certificate_monthly",
+        "label": "边界夹具 · equal · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__profession_monthly",
+        "label": "边界夹具 · equal · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__unit_inspection",
+        "label": "边界夹具 · equal · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__basic_project_monthly",
+        "label": "边界夹具 · equal · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__government_cases",
+        "label": "边界夹具 · equal · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__map_reviews",
+        "label": "边界夹具 · equal · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_equal__tianditu_monthly",
+        "label": "边界夹具 · equal · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "boundary_above__basic_project_monthly",
+        "label": "边界夹具 · above · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__certificate_monthly",
+        "label": "边界夹具 · above · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__government_cases",
+        "label": "边界夹具 · above · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__map_reviews",
+        "label": "边界夹具 · above · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__profession_monthly",
+        "label": "边界夹具 · above · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__tianditu_monthly",
+        "label": "边界夹具 · above · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_above__unit_inspection",
+        "label": "边界夹具 · above · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ],
+        "primary_key": [],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "boundary_duplicates__certificate_monthly",
+        "label": "边界夹具 · duplicates · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__profession_monthly",
+        "label": "边界夹具 · duplicates · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__unit_inspection",
+        "label": "边界夹具 · duplicates · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__basic_project_monthly",
+        "label": "边界夹具 · duplicates · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__government_cases",
+        "label": "边界夹具 · duplicates · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__map_reviews",
+        "label": "边界夹具 · duplicates · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_duplicates__tianditu_monthly",
+        "label": "边界夹具 · duplicates · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__certificate_monthly",
+        "label": "边界夹具 · quality · 合成测试 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__profession_monthly",
+        "label": "边界夹具 · quality · 合成测试 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__unit_inspection",
+        "label": "边界夹具 · quality · 合成测试 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__basic_project_monthly",
+        "label": "边界夹具 · quality · 合成测试 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__government_cases",
+        "label": "边界夹具 · quality · 合成测试 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__map_reviews",
+        "label": "边界夹具 · quality · 合成测试 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "boundary_quality__tianditu_monthly",
+        "label": "边界夹具 · quality · 合成测试 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__certificate_monthly",
+        "label": "独立合成测试数据 a58772a93ce8 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__profession_monthly",
+        "label": "独立合成测试数据 a58772a93ce8 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__unit_inspection",
+        "label": "独立合成测试数据 a58772a93ce8 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__basic_project_monthly",
+        "label": "独立合成测试数据 a58772a93ce8 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__government_cases",
+        "label": "独立合成测试数据 a58772a93ce8 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__map_reviews",
+        "label": "独立合成测试数据 a58772a93ce8 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_a58772a93ce8__tianditu_monthly",
+        "label": "独立合成测试数据 a58772a93ce8 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__certificate_monthly",
+        "label": "独立合成测试数据 b83a03b062f6 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__profession_monthly",
+        "label": "独立合成测试数据 b83a03b062f6 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__unit_inspection",
+        "label": "独立合成测试数据 b83a03b062f6 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__basic_project_monthly",
+        "label": "独立合成测试数据 b83a03b062f6 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__government_cases",
+        "label": "独立合成测试数据 b83a03b062f6 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__map_reviews",
+        "label": "独立合成测试数据 b83a03b062f6 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_b83a03b062f6__tianditu_monthly",
+        "label": "独立合成测试数据 b83a03b062f6 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__certificate_monthly",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__profession_monthly",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__unit_inspection",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__basic_project_monthly",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__government_cases",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__map_reviews",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_17ab3f35b9e7__tianditu_monthly",
+        "label": "独立合成测试数据 17ab3f35b9e7 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__certificate_monthly",
+        "label": "独立合成测试数据 23465fe041af · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__profession_monthly",
+        "label": "独立合成测试数据 23465fe041af · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__unit_inspection",
+        "label": "独立合成测试数据 23465fe041af · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__basic_project_monthly",
+        "label": "独立合成测试数据 23465fe041af · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__government_cases",
+        "label": "独立合成测试数据 23465fe041af · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__map_reviews",
+        "label": "独立合成测试数据 23465fe041af · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_23465fe041af__tianditu_monthly",
+        "label": "独立合成测试数据 23465fe041af · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__certificate_monthly",
+        "label": "独立合成测试数据 ba9b4527ead5 · 证书月末有效状态快照；一行一个证书月份，单位不可代替证书",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          },
+          {
+            "name": "valid_from",
+            "type": "TEXT",
+            "label": "valid_from"
+          },
+          {
+            "name": "valid_to",
+            "type": "TEXT",
+            "label": "valid_to"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__profession_monthly",
+        "label": "独立合成测试数据 ba9b4527ead5 · 专业资质月末快照；按专业×等级统计DISTINCT unit_id，跨专业计次可重复",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "certificate_id",
+            "type": "TEXT",
+            "label": "certificate_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "unit_name",
+            "type": "TEXT",
+            "label": "unit_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "ownership",
+            "type": "TEXT",
+            "label": "ownership"
+          },
+          {
+            "name": "profession",
+            "type": "TEXT",
+            "label": "profession"
+          },
+          {
+            "name": "grade",
+            "type": "TEXT",
+            "label": "grade"
+          },
+          {
+            "name": "valid",
+            "type": "INTEGER",
+            "label": "valid"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__unit_inspection",
+        "label": "独立合成测试数据 ba9b4527ead5 · 资质单位监督检查；单位检查次数口径；passed=1为合格，NULL为未完成，不是成果抽样估计",
+        "columns": [
+          {
+            "name": "inspection_id",
+            "type": "TEXT",
+            "label": "inspection_id"
+          },
+          {
+            "name": "unit_id",
+            "type": "TEXT",
+            "label": "unit_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "inspection_date",
+            "type": "TEXT",
+            "label": "inspection_date"
+          },
+          {
+            "name": "passed",
+            "type": "INTEGER",
+            "label": "passed"
+          },
+          {
+            "name": "completed",
+            "type": "INTEGER",
+            "label": "completed"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__basic_project_monthly",
+        "label": "独立合成测试数据 ba9b4527ead5 · 省级基础测绘项目月末快照；金额万元；预算budget、实际投入investment、支出spent分开；验收完成率accepted_work/planned_work；月度金额是累计快照不可跨月相加",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "project_id",
+            "type": "TEXT",
+            "label": "project_id"
+          },
+          {
+            "name": "project_name",
+            "type": "TEXT",
+            "label": "project_name"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "admin_level",
+            "type": "TEXT",
+            "label": "admin_level"
+          },
+          {
+            "name": "project_type",
+            "type": "TEXT",
+            "label": "project_type"
+          },
+          {
+            "name": "budget",
+            "type": "REAL",
+            "label": "budget"
+          },
+          {
+            "name": "investment",
+            "type": "REAL",
+            "label": "investment"
+          },
+          {
+            "name": "fiscal_investment",
+            "type": "REAL",
+            "label": "fiscal_investment"
+          },
+          {
+            "name": "spent",
+            "type": "REAL",
+            "label": "spent"
+          },
+          {
+            "name": "planned_work",
+            "type": "REAL",
+            "label": "planned_work"
+          },
+          {
+            "name": "accepted_work",
+            "type": "REAL",
+            "label": "accepted_work"
+          },
+          {
+            "name": "accepted",
+            "type": "INTEGER",
+            "label": "accepted"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__government_cases",
+        "label": "独立合成测试数据 ba9b4527ead5 · 政务受理事项；结案日期统计批准率approved/已结案、按时办结率on_time/已结案；未办结不入分母",
+        "columns": [
+          {
+            "name": "case_id",
+            "type": "TEXT",
+            "label": "case_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "accepted_date",
+            "type": "TEXT",
+            "label": "accepted_date"
+          },
+          {
+            "name": "closed_date",
+            "type": "TEXT",
+            "label": "closed_date"
+          },
+          {
+            "name": "service_type",
+            "type": "TEXT",
+            "label": "service_type"
+          },
+          {
+            "name": "result",
+            "type": "TEXT",
+            "label": "result"
+          },
+          {
+            "name": "approved",
+            "type": "INTEGER",
+            "label": "approved"
+          },
+          {
+            "name": "on_time",
+            "type": "INTEGER",
+            "label": "on_time"
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "label": "reason"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__map_reviews",
+        "label": "独立合成测试数据 ba9b4527ead5 · 地图审核办结记录；省级与部委托两类；办理量按completed_date，application_date为受理时间",
+        "columns": [
+          {
+            "name": "review_id",
+            "type": "TEXT",
+            "label": "review_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "label": "category"
+          },
+          {
+            "name": "application_date",
+            "type": "TEXT",
+            "label": "application_date"
+          },
+          {
+            "name": "completed_date",
+            "type": "TEXT",
+            "label": "completed_date"
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "label": "status"
+          }
+        ]
+      },
+      {
+        "name": "acceptance_ba9b4527ead5__tianditu_monthly",
+        "label": "独立合成测试数据 ba9b4527ead5 · 天地图广东平台按月服务；service_count为当月次数，users为月末存量不可相加；年末用户取12月",
+        "columns": [
+          {
+            "name": "month",
+            "type": "TEXT",
+            "label": "month"
+          },
+          {
+            "name": "platform_id",
+            "type": "TEXT",
+            "label": "platform_id"
+          },
+          {
+            "name": "city",
+            "type": "TEXT",
+            "label": "city"
+          },
+          {
+            "name": "service_count",
+            "type": "INTEGER",
+            "label": "service_count"
+          },
+          {
+            "name": "users",
+            "type": "INTEGER",
+            "label": "users"
+          }
+        ]
+      },
+      {
+        "name": "connection_check__connection_acceptance",
+        "label": "数据库配置验收 · SQLite 模拟数据 · connection_acceptance",
+        "columns": [
+          {
+            "name": "region",
+            "type": "TEXT",
+            "label": ""
+          },
+          {
+            "name": "amount",
+            "type": "INTEGER",
+            "label": ""
+          }
+        ]
+      },
+      {
+        "name": "advanced__allocation",
+        "label": "基础30 · 高级能力合成测试 · allocation",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "coefficient",
+            "type": "REAL",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "id"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "advanced__budget",
+        "label": "基础30 · 高级能力合成测试 · budget",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "city_id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "amount",
+            "type": "REAL",
+            "label": ""
+          },
+          {
+            "name": "date",
+            "type": "TEXT",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "id"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "advanced__cities",
+        "label": "基础30 · 高级能力合成测试 · cities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "name",
+            "type": "TEXT",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "id"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "advanced__inventory",
+        "label": "基础30 · 高级能力合成测试 · inventory",
+        "columns": [
+          {
+            "name": "entity",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "amount",
+            "type": "REAL",
+            "label": ""
+          },
+          {
+            "name": "date",
+            "type": "TEXT",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "entity",
+          "date"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "advanced__series",
+        "label": "基础30 · 高级能力合成测试 · series",
+        "columns": [
+          {
+            "name": "period",
+            "type": "TEXT",
+            "label": ""
+          },
+          {
+            "name": "value",
+            "type": "REAL",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "period"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      },
+      {
+        "name": "advanced__spending",
+        "label": "基础30 · 高级能力合成测试 · spending",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "city_id",
+            "type": "INTEGER",
+            "label": ""
+          },
+          {
+            "name": "amount",
+            "type": "REAL",
+            "label": ""
+          },
+          {
+            "name": "date",
+            "type": "TEXT",
+            "label": ""
+          }
+        ],
+        "primary_key": [
+          "id"
+        ],
+        "unique_keys": [],
+        "foreign_keys": []
+      }
+    ],
+    "terms": [],
+    "examples": [],
+    "metric_mapping": "provincial-monthly/1",
+    "coverage": {
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "first_month": "2023-01",
+      "latest_month": "2026-09",
+      "as_of": "2026-09-27",
+      "complete_years": [
+        2023,
+        2024,
+        2025
+      ],
+      "cities": [
+        "广州市",
+        "深圳市",
+        "珠海市",
+        "汕头市",
+        "佛山市",
+        "韶关市",
+        "湛江市",
+        "肇庆市",
+        "江门市",
+        "茂名市",
+        "惠州市",
+        "梅州市",
+        "汕尾市",
+        "河源市",
+        "阳江市",
+        "清远市",
+        "东莞市",
+        "中山市",
+        "潮州市",
+        "揭阳市",
+        "云浮市"
+      ],
+      "professions": [
+        "大地测量",
+        "测绘航空摄影",
+        "摄影测量与遥感",
+        "地理信息系统工程",
+        "工程测量",
+        "海洋测绘",
+        "界线与不动产测绘",
+        "地图编制",
+        "导航电子地图制作",
+        "互联网地图服务"
+      ]
+    }
+  },
+  "draft": {
+    "source_ids": [
+      "test-database"
+    ],
+    "tables": {
+      "test-database": [
+        "resource_demo__dim_district",
+        "resource_demo__qualification_units",
+        "resource_demo__measurement_projects",
+        "resource_demo__survey_markers",
+        "resource_demo__land_change_monitoring",
+        "resource_demo__mapping_products",
+        "resource_demo__survey_field_work",
+        "resource_demo__result_quality_check",
+        "resource_demo__instrument_assets",
+        "resource_demo__data_sharing_service",
+        "resource_demo__survey_staff",
+        "resource_demo__budget_execution",
+        "resource_demo__district_output_stats",
+        "resource_demo__legacy_archive_registry",
+        "resource_demo__gnss_station_monthly",
+        "resource_demo__archive_doc_index",
+        "resource_demo__survey_year_stats",
+        "resource_demo__survey_qual_grade",
+        "resource_demo__survey_unit_ownership",
+        "retail_demo__sales",
+        "intent_v1__certificate_monthly",
+        "intent_v1__profession_monthly",
+        "intent_v1__unit_inspection",
+        "intent_v1__basic_project_monthly",
+        "intent_v1__government_cases",
+        "intent_v1__map_reviews",
+        "intent_v1__tianditu_monthly",
+        "certificate_monthly",
+        "profession_monthly",
+        "unit_inspection",
+        "basic_project_monthly",
+        "government_cases",
+        "map_reviews",
+        "tianditu_monthly",
+        "boundary_below__certificate_monthly",
+        "boundary_below__profession_monthly",
+        "boundary_below__unit_inspection",
+        "boundary_below__basic_project_monthly",
+        "boundary_below__government_cases",
+        "boundary_below__map_reviews",
+        "boundary_below__tianditu_monthly",
+        "boundary_equal__certificate_monthly",
+        "boundary_equal__profession_monthly",
+        "boundary_equal__unit_inspection",
+        "boundary_equal__basic_project_monthly",
+        "boundary_equal__government_cases",
+        "boundary_equal__map_reviews",
+        "boundary_equal__tianditu_monthly",
+        "boundary_above__certificate_monthly",
+        "boundary_above__profession_monthly",
+        "boundary_above__unit_inspection",
+        "boundary_above__basic_project_monthly",
+        "boundary_above__government_cases",
+        "boundary_above__map_reviews",
+        "boundary_above__tianditu_monthly",
+        "boundary_duplicates__certificate_monthly",
+        "boundary_duplicates__profession_monthly",
+        "boundary_duplicates__unit_inspection",
+        "boundary_duplicates__basic_project_monthly",
+        "boundary_duplicates__government_cases",
+        "boundary_duplicates__map_reviews",
+        "boundary_duplicates__tianditu_monthly",
+        "boundary_quality__certificate_monthly",
+        "boundary_quality__profession_monthly",
+        "boundary_quality__unit_inspection",
+        "boundary_quality__basic_project_monthly",
+        "boundary_quality__government_cases",
+        "boundary_quality__map_reviews",
+        "boundary_quality__tianditu_monthly",
+        "acceptance_a58772a93ce8__certificate_monthly",
+        "acceptance_a58772a93ce8__profession_monthly",
+        "acceptance_a58772a93ce8__unit_inspection",
+        "acceptance_a58772a93ce8__basic_project_monthly",
+        "acceptance_a58772a93ce8__government_cases",
+        "acceptance_a58772a93ce8__map_reviews",
+        "acceptance_a58772a93ce8__tianditu_monthly",
+        "acceptance_b83a03b062f6__certificate_monthly",
+        "acceptance_b83a03b062f6__profession_monthly",
+        "acceptance_b83a03b062f6__unit_inspection",
+        "acceptance_b83a03b062f6__basic_project_monthly",
+        "acceptance_b83a03b062f6__government_cases",
+        "acceptance_b83a03b062f6__map_reviews",
+        "acceptance_b83a03b062f6__tianditu_monthly",
+        "acceptance_17ab3f35b9e7__certificate_monthly",
+        "acceptance_17ab3f35b9e7__profession_monthly",
+        "acceptance_17ab3f35b9e7__unit_inspection",
+        "acceptance_17ab3f35b9e7__basic_project_monthly",
+        "acceptance_17ab3f35b9e7__government_cases",
+        "acceptance_17ab3f35b9e7__map_reviews",
+        "acceptance_17ab3f35b9e7__tianditu_monthly",
+        "acceptance_23465fe041af__certificate_monthly",
+        "acceptance_23465fe041af__profession_monthly",
+        "acceptance_23465fe041af__unit_inspection",
+        "acceptance_23465fe041af__basic_project_monthly",
+        "acceptance_23465fe041af__government_cases",
+        "acceptance_23465fe041af__map_reviews",
+        "acceptance_23465fe041af__tianditu_monthly",
+        "acceptance_ba9b4527ead5__certificate_monthly",
+        "acceptance_ba9b4527ead5__profession_monthly",
+        "acceptance_ba9b4527ead5__unit_inspection",
+        "acceptance_ba9b4527ead5__basic_project_monthly",
+        "acceptance_ba9b4527ead5__government_cases",
+        "acceptance_ba9b4527ead5__map_reviews",
+        "acceptance_ba9b4527ead5__tianditu_monthly",
+        "advanced__allocation",
+        "advanced__budget",
+        "advanced__cities",
+        "advanced__inventory",
+        "advanced__series",
+        "advanced__spending"
+      ]
+    },
+    "terms": [
+      {
+        "id": "joined_execution",
+        "name": "多表城市资金执行率",
+        "definition": "实际支出/预算*100；两个操作数分别聚合并通过城市主键对齐，不把无预算当零",
+        "config": {
+          "kind": "semantic-metric",
+          "version": "1.0.0",
+          "source_id": "test-database",
+          "coverage": [
+            "2025"
+          ],
+          "id": "joined_execution",
+          "unit": "%",
+          "definition": "实际支出/预算*100；两个操作数分别聚合并通过城市主键对齐，不把无预算当零",
+          "operands": [
+            {
+              "id": "spent",
+              "table": "advanced__spending",
+              "column": "amount",
+              "time_column": "date"
+            },
+            {
+              "id": "budget",
+              "table": "advanced__budget",
+              "column": "amount",
+              "time_column": "date"
+            }
+          ],
+          "formula": "spent / budget * 100",
+          "dimensions": [
+            {
+              "id": "city",
+              "table": "advanced__cities",
+              "column": "name"
+            }
+          ],
+          "relations": [
+            {
+              "from_table": "advanced__spending",
+              "from_columns": [
+                "city_id"
+              ],
+              "to_table": "advanced__cities",
+              "to_columns": [
+                "id"
+              ],
+              "cardinality": "many_to_one"
+            },
+            {
+              "from_table": "advanced__budget",
+              "from_columns": [
+                "city_id"
+              ],
+              "to_table": "advanced__cities",
+              "to_columns": [
+                "id"
+              ],
+              "cardinality": "many_to_one"
+            }
+          ]
+        }
+      },
+      {
+        "id": "inventory_snapshot",
+        "name": "期末库存总量",
+        "definition": "期末库存总量：每实体截至期末最后记录，排除未来快照；不能按期累加",
+        "config": {
+          "kind": "semantic-metric",
+          "version": "1.0.0",
+          "source_id": "test-database",
+          "coverage": [
+            "2025"
+          ],
+          "id": "inventory_snapshot",
+          "unit": "件",
+          "definition": "期末库存总量：每实体截至期末最后记录，排除未来快照；不能按期累加",
+          "operands": [
+            {
+              "id": "stock",
+              "table": "advanced__inventory",
+              "column": "amount",
+              "time_column": "date",
+              "aggregation": "snapshot_sum",
+              "entity_columns": [
+                "entity"
+              ]
+            }
+          ],
+          "formula": "stock"
+        }
+      }
+    ],
+    "examples": [],
+    "skills": [
+      {
+        "id": "forecast",
+        "name": "月度线性预测",
+        "description": "合成月度序列，预测3期并验证3次滚动回测",
+        "config": {
+          "kind": "analysis-skill",
+          "version": "1.2.0",
+          "method_id": "matrix.42",
+          "columns": [
+            "value"
+          ],
+          "time_column": "period",
+          "options": {
+            "forecast_model": "linear",
+            "forecast_steps": 3
+          }
+        }
+      },
+      {
+        "id": "allocation",
+        "name": "资源最优配置",
+        "description": "合成目标系数，x1+x2不超过4，各变量0..10，最大化收益",
+        "config": {
+          "kind": "analysis-skill",
+          "version": "1.0.0",
+          "method_id": "matrix.44",
+          "columns": [
+            "coefficient"
+          ],
+          "options": {
+            "maximize": true,
+            "constraints": [
+              {
+                "coefficients": [
+                  1,
+                  1
+                ],
+                "bound": 4
+              }
+            ],
+            "bounds": [
+              [
+                0,
+                10
+              ],
+              [
+                0,
+                10
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "layers": []
+  }
+}
